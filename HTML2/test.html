@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+  
+ <p id="result"></p>
+    <script>
+        function findMin(...args) {
+            return Math.min(...args);
+        }
+        // Example usage
+        let result = findMin(3, 1, 7, 0, -7, 10);
+    
+        // Display result in the <p> tag
+        document.getElementById("result").innerText = "Minimum value: " + result;
+    </script>
+
+
+    
+</body>
+</html>

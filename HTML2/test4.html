@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Birthday Invitation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #f9f1e7;
+      font-family: 'Playfair Display', serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: #f9f1e7;
+      width: 400px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border: 1px solid #ccc;
+      position: relative;
+      text-align: center;
+    }
+
+    .balloon {
+      position: absolute;
+      width: 80px;
+      height: 120px;
+      border: 2px solid black;
+      border-radius: 50% 50% 45% 45%;
+      text-align: center;
+      font-size: 22px;
+      line-height: 120px;
+      font-weight: bold;
+    }
+
+    .balloon.left {
+      top: 20px;
+      left: -30px;
+    }
+
+    .balloon.right {
+      top: 20px;
+      right: -30px;
+    }
+
+    h1 {
+      font-family: 'Allura', cursive;
+      font-size: 48px;
+      margin: 10px 0;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 16px;
+      margin: 5px 0;
+    }
+
+    .cheers {
+      margin-top: 40px;
+    }
+
+    .cheers svg {
+      width: 100px;
+      height: auto;
+    }
+
+    .rsvp {
+      margin-top: 15px;
+      font-size: 15px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="balloon left">30</div>
+    <div class="balloon right"></div>
+
+    <p>you’re invited to:</p>
+    <h1>Samantha’s</h1>
+    <h2>30th Birthday</h2>
+    <p>Saturday, September 12, 2026</p>
+    <p>at 7pm</p>
+    <p>Bather’s Pavilion</p>
+    <p>1125 Elizabeth St, Mossman</p>
+    <p class="rsvp">Rsvp to: 123.456.789</p>
+
+    <div class="cheers">
+      <!-- Simple cheers icon as SVG -->
+      <svg fill="none" stroke="black" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M8 3c1.5 3 2 6 2 9s-.5 6-2 9m8-18c-1.5 3-2 6-2 9s.5 6 2 9M2 12h20" />
+      </svg>
+      <p style="font-size: 14px;">cin cin</p>
+    </div>
+  </div>
+</body>
+</html>

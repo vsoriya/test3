@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBOS0Gwmtw60FAwKBQCgW_5XV13SoFwrvc",
+  authDomain: "create-loginform-and-reg-265b2.firebaseapp.com",
+  projectId: "create-loginform-and-reg-265b2",
+  storageBucket: "create-loginform-and-reg-265b2.firebasestorage.app",
+  messagingSenderId: "957189892565",
+  appId: "1:957189892565:web:a66f30e49da4ccda7d355c",
+  measurementId: "G-9CFYX37YK4"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+    </script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96" id="loginForm">
+        <h2 class="text-2xl font-semibold text-center mb-4">Login</h2>
+        <input type="email" id="loginEmail" class="w-full p-2 border rounded mb-2" placeholder="Email">
+        <input type="password" id="loginPassword" class="w-full p-2 border rounded mb-4" placeholder="Password">
+        <button onclick="login()" class="bg-blue-500 text-white w-full p-2 rounded hover:bg-blue-600">Login</button>
+        <p class="text-center mt-2 text-sm">Don't have an account? <a href="#" class="text-blue-500" onclick="toggleForms()">Register</a></p>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96 hidden" id="registerForm">
+        <h2 class="text-2xl font-semibold text-center mb-4">Register</h2>
+        <input type="text" id="registerName" class="w-full p-2 border rounded mb-2" placeholder="Full Name">
+        <input type="email" id="registerEmail" class="w-full p-2 border rounded mb-2" placeholder="Email">
+        <input type="password" id="registerPassword" class="w-full p-2 border rounded mb-2" placeholder="Password">
+        <input type="password" id="confirmPassword" class="w-full p-2 border rounded mb-4" placeholder="Confirm Password">
+        <button onclick="register()" class="bg-green-500 text-white w-full p-2 rounded hover:bg-green-600">Register</button>
+        <p class="text-center mt-2 text-sm">Already have an account? <a href="#" class="text-blue-500" onclick="toggleForms()">Login</a></p>
+    </div>
+
+    <script>
+        function toggleForms() {
+            document.getElementById("loginForm").classList.toggle("hidden");
+            document.getElementById("registerForm").classList.toggle("hidden");
+        }
+        
+        function register() {
+            let name = document.getElementById("registerName").value.trim();
+            let email = document.getElementById("registerEmail").value.trim();
+            let password = document.getElementById("registerPassword").value;
+            let confirmPassword = document.getElementById("confirmPassword").value;
+            
+            if (!name || !email || !password || !confirmPassword) {
+                alert("Please fill all fields");
+                return;
+            }
+            if (!validateEmail(email)) {
+                alert("Invalid email format");
+                return;
+            }
+            if (password.length < 6) {
+                alert("Password must be at least 6 characters long");
+                return;
+            }
+            if (password !== confirmPassword) {
+                alert("Passwords do not match");
+                return;
+            }
+            
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+            if (users.some(user => user.email === email)) {
+                alert("Email already registered");
+                return;
+            }
+            
+            users.push({ name, email, password });
+            localStorage.setItem("users", JSON.stringify(users));
+            alert("Registration successful");
+            toggleForms();
+        }
+
+        function login() {
+            let email = document.getElementById("loginEmail").value.trim();
+            let password = document.getElementById("loginPassword").value;
+            
+            if (!email || !password) {
+                alert("Please enter both email and password");
+                return;
+            }
+            
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+            let user = users.find(user => user.email === email && user.password === password);
+            
+            if (user) {
+                alert("Login successful! Welcome, " + user.name);
+            } else {
+                alert("Invalid email or password");
+            }
+        }
+        
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+    </script>
+</body>
+</html>

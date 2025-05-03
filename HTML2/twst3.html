@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Full Integration</title>
+</head>
+<body>
+
+    <h2>Register</h2>
+    <input type="email" id="reg-email" placeholder="Email">
+    <input type="password" id="reg-password" placeholder="Password">
+    <button onclick="register()">Register</button>
+
+    <h2>Login</h2>
+    <input type="email" id="login-email" placeholder="Email">
+    <input type="password" id="login-password" placeholder="Password">
+    <button onclick="login()">Login</button>
+
+    <button onclick="logout()">Logout</button>
+
+    <h2>Save User Info</h2>
+    <input type="text" id="username" placeholder="Username">
+    <button onclick="saveUserInfo()">Save</button>
+
+    <h2>Get User Info</h2>
+    <button onclick="getUserInfo()">Get Info</button>
+    <p id="user-info"></p>
+
+    <h2>Upload File</h2>
+    <input type="file" id="file-input">
+    <button onclick="uploadFile()">Upload</button>
+
+    <h2>Download File</h2>
+    <input type="text" id="file-name" placeholder="File Name">
+    <button onclick="getFile()">Get File</button>
+    <img id="file-preview" width="200">
+
+    <script type="module">
+        // Import Firebase functions
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-storage.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB5098cwmWt60FAwKBQc9w_5XVI3SoFwvc",
+            authDomain: "create-loginform-and-reg-265b2.firebaseapp.com",
+            projectId: "create-loginform-and-reg-265b2",
+            storageBucket: "create-loginform-and-reg-265b2.appspot.com",
+            messagingSenderId: "957189892565",
+            appId: "1:957189892565:web:a46f30e49da4cc4da7d355c",
+            measurementId: "G-9CFX73YKX4"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        console.log("Firebase Initialized!");
+
+        // Register User
+        async function register() {
+            const email = document.getElementById("reg-email").value;
+            const password = document.getElementById("reg-password").value;
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                console.log("User Registered:", userCredential.user);
+            } catch (error) {
+                console.error("Error:", error.message);
+            }
+        }
+
+        // Login User
+        async function login() {
+            const email = document.getElementById("login-email").value;
+            const password = document.getElementById("login-password").value;
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                console.log("User Logged In:", userCredential.user);
+            } catch (error) {
+                console.error("Error:", error.message);
+            }
+        }
+        // Logout User
+        async function logout() {
+            try {
+                await signOut(auth);
+                console.log("User Logged Out");
+            } catch (error) {
+                console.error("Error:", error.message);
+            }
+        }
+
+        // Save User Info
+        async function saveUserInfo() {
+            const user = auth.currentUser;
+            const username = document.getElementById("username").value;
+            if (user) {
+                try {
+                    await setDoc(doc(db, "users", user.uid), { username });
+                    console.log("User Info Saved!");
+                } catch (error) {
+                    console.error("Error:", error.message);
+                }
+            } else {
+                console.log("No User Logged In");
+            }
+        }
+
+        // Get User Info
+        async function getUserInfo() {
+            const user = auth.currentUser;
+            if (user) {
+                try {
+                    const docSnap = await getDoc(doc(db, "users", user.uid));
+                    if (docSnap.exists()) {
+                        document.getElementById("user-info").innerText = Username; $:{docSnap.data().username};
+                    } else {
+                        console.log("No User Data Found");
+                    }
+                } catch (error) {
+                    console.error("Error:", error.message);
+                }
+            } else {
+                console.log("No User Logged In");
+            }
+        }
+
+        // Upload File
+        async function uploadFile() {
+            const file = document.getElementById("file-input").files[0];
+            if (!file) return alert("Choose a file first!");
+            
+            const fileRef = ref(storage, "uploads/" + file.name);
+            try {
+                await uploadBytes(fileRef, file);
+                console.log("File Uploaded!");
+            } catch (error) {
+                console.error("Error:", error.message);
+            }
+        }
+
+        // Get File
+        async function getFile() {
+            const fileName = document.getElementById("file-name").value;
+            const fileRef = ref(storage, "uploads/" + fileName);
+            try {
+                const url = await getDownloadURL(fileRef);
+                document.getElementById("file-preview").src = url;
+                console.log("File Retrieved!");
+            } catch (error) {
+                console.error("Error:", error.message);
+            }
+        }
+
+    </script>
+</body>
+</html>
